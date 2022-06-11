@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragmentos/fragHead :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>Formulario de Edición de Curso</title>
+</head>
+<body class="body-estilo-2">
+<!-- Navbar -->
+<div th:replace="fragmentos/fragNavbar :: barra"></div>
+<div class="container">
+    <div class="row justify-content-center mt-3">
+        <div class="col justify-content-center">
+            <h1 class="text-center">Formulario de Edición de Curso</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4 mb-4">
+        <div class="col-md-10">
+            <div class="card estilo-tarjeta-curso">
+                <div class="card-body">
+                    <form class="form row justify-content-center" th:action="@{/admin/editar-curso}" method="post" th:object="${curso}">
+                        <div class="form-group col-md-12 mt-2">
+                            <!-- Campos ocultos que contienen el ID y los cupos disponibles del curso a editar -->
+                            <input type="hidden" name="id" th:value="${curso.id}" th:field="*{id}">
+                            <input type="hidden" name="cuposDisponibles" th:value="${curso.cuposDisponibles}" th:field="*{cuposDisponibles}">
+                        </div>
+                        <div class="form-group col-md-12 mt-2">
+                            <label th:for="nombre">Nombre del curso</label>
+                            <input type="hidden" name="id" th:value="${curso.id}" th:field="*{id}">
+                            <input type="hidden" name="cuposDisponibles" th:value="${curso.cuposDisponibles}" th:field="*{cuposDisponibles}">
+                            <input class="form-control" type="text" placeholder="Ingrese nombre del curso" name="nombre"
+                                   th:field="*{nombre}">
+                            <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <div class="form-group col-md-6 mt-2">
+                            <label th:for="descripcion">Descripción</label>
+                            <textarea class="form-control"
+                                      placeholder="Ingrese la descripción del curso"
+                                      name="descripcion"
+                                      rows="8"
+                                      th:field="*{descripcion}"></textarea>
+                            <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <div class="form-group col-md-6 mt-2">
+                            <label th:for="contenidos">Contenidos</label>
+                            <textarea class="form-control"
+                                      placeholder="Ingrese los contenidos del curso"
+                                      name="contenidos"
+                                      rows="8"
+                                      th:field="*{contenidos}"></textarea>
+                            <span th:if="${#fields.hasErrors('contenidos')}" th:errors="*{contenidos}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <div class="form-group col-md-4 mt-2">
+                            <label th:for="fechaInicio">Fecha Inicio</label>
+                            <input class="form-control" type="date" name="fechaInicio"
+                                   th:field="*{fechaInicio}" min="">
+                            <span th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <div class="form-group col-md-4 mt-2">
+                            <label th:for="fechaFinal">Fecha Fin</label>
+                            <input class="form-control" type="date" name="fechaFinal"
+                                   th:field="*{fechaFinal}" min="">
+                            <span th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}" th:class="error">Error</span>
+                            <span th:if="${errorFechas}" th:text="'La fecha de fin ocurre antes de la fecha de inicio'" th:class="error">ErrorFecha</span>
+                        </div>
+                        <div class="form-group col-md-4 mt-2">
+                            <label th:for="cuposIniciales">Cupos Iniciales</label>
+                            <input class="form-control" type="number" placeholder="Ingrese num. de cupos" name="cuposIniciales" th:field="*{cuposIniciales}">
+                            <span th:if="${#fields.hasErrors('cuposIniciales')}" th:errors="*{cuposIniciales}" th:class="error">Error</span>
+                        </div>
+                        <div class="form-group col-md-12 mt-2">
+                            <label th:for="imagen">Imagen</label>
+                            <input class="form-control" type="text" placeholder="Ingrese URL de imagen" name="imagen" th:field="*{imagen}">
+                            <span th:if="${#fields.hasErrors('imagen')}" th:errors="*{imagen}" th:class="error">Error</span>
+
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="form-group col-md-4 d-flex justify-content-center mt-4">
+                                <button class="btn btn-warning btn-outline-dark" type="submit">Guardar Cambios</button>
+                            </div>
+                            <div class="form-group col-md-4 d-flex justify-content-center mt-4">
+                                <a class="btn btn-danger btn-outline-dark" type="button" th:href="@{/admin/administrar-cursos}">Volver Atrás</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragmentos/fragFooter :: footer"></div>
+</body>
+</html>

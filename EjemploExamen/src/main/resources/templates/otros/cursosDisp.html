@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- PÁGINA QUE MUESTRA TARJETAS CON LOS CURSOS DISPONIBLES -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Fragmento de header -->
+<head th:replace="fragmentos/fragHead :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>Cursos Disponibles</title>
+</head>
+<body class="body-estilo-2">
+<!-- Fragmento de Navbar -->
+<div th:replace="fragmentos/fragNavbar :: barra"></div>
+<div class="container">
+    <!-- Fila que contiene el título de la página -->
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6">
+            <h1 class="text-center">Cursos Disponibles</h1>
+        </div>
+    </div>
+    <!-- Fila que contiene un mensaje que indica que no hay cursos en la BD -->
+    <!-- Solo aparece cuando la lista de cursos disponibles está vacía -->
+    <div class="row justify-content-center mt-5" th:if="${cursos.isEmpty()}">
+        <div class="col-md-10 justify-content-center">
+            <h3 class="text-center">Lo sentimos, aún no hay cursos disponibles. Pronto habrán novedades!</h3>
+        </div>
+    </div>
+    <!-- Fila que contiene un conjunto de tarjetas con la información de los cursos -->
+    <!-- Solo aparece cuando la lista de cursos disponibles no está vacía -->
+    <div class="row justify-content-center mb-3" th:if="${!cursos.isEmpty()}">
+        <!-- Estructura repetida (usando th:each) -- Tarjetas de Curso -->
+        <div class="col-md-4 mt-4" th:each="curso: ${cursos}">
+            <!-- Tarjeta -->
+            <div class="card h-100 estilo-tarjeta-curso">
+                <!-- Imagen referencial del curso -->
+                <img th:src="${curso.imagen}" class="card-img-top mx-auto estilo-imagen mt-3">
+                <!-- Descripción del curso (limitada a 255 caracteres máximo) -->
+                <div class="card-body h-100">
+                    <h5 class="card-title text-center" th:text="${curso.nombre}">Nombre del Curso</h5>
+                    <p class="card-text" th:if="${curso.descripcion.length()>255}" th:text="${curso.descripcion.substring(0, 255)} + '...'">Descripción</p>
+                    <p class="card-text" th:if="${curso.descripcion.length()<=255}" th:text="${curso.descripcion}">Descripción</p>
+                </div>
+                <!-- Lista con información específica del curso -->
+                <!-- Si fecha sistema >= fecha inicio : Se muestra un mensaje que indica que el curso ya comenzó -->
+                <!-- Si fecha sistema >= fecha término : Se muestra un mensaje que indica que el curso ya finalizó -->
+                <ul class="list-group list-group-flush">
+                    <li th:if="${curso.fechaInicio.after(#dates.createNow())}" class="list-group-item estilo-tarjeta-curso" th:text="'Fecha Inicio: ' + ${#dates.format(curso.fechaInicio, 'dd/MM/yyyy')}"></li>
+                    <li th:if="${curso.fechaInicio.after(#dates.createNow())}" class="list-group-item estilo-tarjeta-curso" th:text="'Fecha Fin: ' + ${#dates.format(curso.fechaFinal, 'dd/MM/yyyy')}"></li>
+                    <li th:if="${!curso.fechaInicio.after(#dates.createNow())}" class="list-group-item error text-center">CURSO EN PROGRESO</li>
+                    <li th:if="${!curso.fechaFinal.after(#dates.createNow())}" class="list-group-item error text-center">CURSO TERMINADO</li>
+                    <li class="list-group-item estilo-tarjeta-curso" th:text="'Cupos: ' + ${curso.cuposIniciales}"></li>
+                    <li class="list-group-item estilo-tarjeta-curso" th:text="'Cupos disponibles: ' + ${curso.cuposDisponibles}"></li>
+                </ul>
+                <div class="card-body">
+                    <!-- Botón de inscripción siempre habilitado para invitados y alumnos sin curso inscrito-->
+                    <!-- El botón de "inscribirse" se inhabilita en 3 casos: -->
+                    <!-- A) Ya se inscribió un curso -->
+                    <!-- B) No hay cupos disponibles -->
+                    <!-- C) El curso ya inició -->
+                    <a th:href="@{/alumno/inscripcion-curso/{id}(id=${curso.id})}"
+                       th:class="${(curso.cuposDisponibles>0 && usuarioHab && curso.fechaInicio.after(#dates.createNow()))?'card-link btn btn-primary':'card-link btn btn-secondary disabled'}"
+                       th:text="${curso.cuposDisponibles==0?'Sin Cupos':'Inscribirse'}"
+                       onclick="return confirm('¿Esta seguro de inscribirse en este curso?')">Inscribirse</a>
+                    <!-- Botón de "Ver Detalles" del curso -->
+                    <a th:href="@{/cursos/ficha/{id}(id=${curso.id})}" class="card-link btn btn-warning">Detalles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fragmento de Footer -->
+<div th:replace="fragmentos/fragFooter :: footer"></div>
+</body>
+</html>

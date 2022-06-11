@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- PÁGINA PARA ADMINISTRAR CURSOS -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Fragmento Head -->
+<head th:replace="fragmentos/fragHead :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>Administración de Cursos</title>
+</head>
+<body class="body-estilo-2">
+<!-- Fragmento Navbar -->
+<div th:replace="fragmentos/fragNavbar :: barra"></div>
+<!-- Container con los elementos restantes de la página -->
+<div class="container">
+    <!-- Fila con el título de la página -->
+    <div class="row mt-3">
+        <div class="col justify-content-center">
+            <h1 class="text-center">Administración de Cursos</h1>
+        </div>
+    </div>
+    <!-- Fila con un botón para registrar un nuevo curso -->
+    <div class="row mt-3 justify-content-center">
+        <div class="col-md-11 justify-content-start">
+            <a class="btn btn-warning" th:href="@{/admin/registro-curso}">Nuevo Curso</a>
+        </div>
+    </div>
+    <!-- Fila con la tabla resumen de los cursos disponibles -->
+    <div class="row mt-3 justify-content-center mb-3">
+        <div class="col-md-11 justify-content-center">
+            <div class="card p-3">
+                <h4 class="card-title">Cursos disponibles</h4>
+                <div class="card-body mt-3 justify-content-center table-responsive">
+                    <!-- Si no hay cursos registrados, se muestra un mensaje en lugar de la tabla -->
+                    <h5 class="text-center" th:if="${cursos.isEmpty()}">Aún no hay cursos disponibles.</h5>
+                    <!-- Si hay cursos registrados, se muestra la tabla resumen de ellos -->
+                    <!-- Se incluyen botones para modificar y eliminar cada curso -->
+                    <table class="table align-middle table-bordered border-dark" th:if="${!cursos.isEmpty()}">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Curso</th>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Fin</th>
+                                <th colspan="2">Acciones</th>
+                            </tr>
+                        </thead>
+                        <!-- Se recorre la lista de cursos, para poblar la tabla resumen -->
+                        <tr th:each="curso: ${cursos}">
+                            <td th:text="${curso.nombre}"></td>
+                            <!-- Se utiliza un formateo de fecha para mostrarlas en formato Dia/Mes/Año -->
+                            <td th:text="${#dates.format(curso.fechaInicio, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${#dates.format(curso.fechaFinal, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <a class="text-center btn btn-primary" th:href="@{/admin/editar-curso/{id}(id=${curso.id})}">Modificar</a>
+                            </td>
+                            <td>
+                                <!-- El botón para eliminar un curso tiene implementado un fragmento de código JS con un onclick listener -->
+                                <!-- para confirmar la eliminación del curso -->
+                                <a class="btn btn-danger" th:href="@{/admin/eliminar-curso/{id}(id=${curso.id})}" onclick="return confirm('¿Seguro que deseas eliminar este curso?');">Eliminar</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fragmento de Footer -->
+<div th:replace="fragmentos/fragFooter :: footer"></div>
+</body>
+</html>

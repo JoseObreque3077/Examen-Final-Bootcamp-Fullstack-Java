@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- VENTANA DE PANEL DE ALUMNOS -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Fragmento de header -->
+<head th:replace="fragmentos/fragHead :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>Mi Panel</title>
+</head>
+<body class="body-estilo-2">
+<!-- Fragmento de Navbar -->
+<div th:replace="fragmentos/fragNavbar :: barra"></div>
+<div class="container">
+    <!-- Fila con el título de la página -->
+    <div class="row">
+        <div class="col justify-content-center">
+            <h1 class="text-center mt-3">Panel Estudiante</h1>
+        </div>
+    </div>
+    <!-- Fila con un mensaje que indica que no se han inscrito cursos (en caso de que así sea) -->
+    <div th:if="${curso==null}" class="row justify-content-center mt-3">
+        <!-- Mensaje: no se han inscrito cursos -->
+        <div class="col-md-12 justify-content-center mt-3">
+            <h3 class="text-center">No estás inscrito en ningún curso.</h3>
+        </div>
+        <!-- Botón que redirecciona a la página con el listado de cursos disponibles -->
+        <div class="col-md-12 d-flex justify-content-center mt-3">
+            <a class="btn btn-warning" th:href="@{/cursos/listado}">Revisar Cursos Disponibles</a>
+        </div>
+    </div>
+    <!-- Fila con los datos del curso inscrito -->
+    <div th:if="${curso!=null}" class="row">
+        <!-- Columna con la imagen del curso inscrito -->
+        <div class="col-md-6 d-flex justify-content-center mt-4">
+            <img th:src="${curso.imagen}" class="mx-auto my-auto estilo-imagen rounded-3">
+        </div>
+        <!-- Columna con la información del curso inscrito por el alumno -->
+        <div class="col-md-6 justify-content-center mt-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-12 justify-content-center">
+                        <h5 class="text-center">Estás inscrito en el siguiente curso:</h5>
+                    </div>
+                    <!-- Título del curso inscrito -->
+                    <div class="col-md-12 justify-content-center mt-3">
+                        <h4 class="text-center" th:text="${curso.nombre}"></h4>
+                    </div>
+                    <!-- Descripción del curso inscrito -->
+                    <div class="col-md-12 justify-content-center mt-2">
+                        <p class="text-center" th:text="${curso.descripcion}"></p>
+                    </div>
+                    <!-- Fechas de inicio y término del curso inscrito -->
+                    <div class="col-md-12 d-flex justify-content-center mt-2">
+                        <ul>
+                            <li th:text="'Fecha de Inicio: ' + ${#dates.format(curso.fechaInicio, 'dd/MM/yyyy')}"></li>
+                            <li th:text="'Fecha de Término: ' + ${#dates.format(curso.fechaFinal, 'dd/MM/yyyy')}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fragmento de footer -->
+<div th:replace="fragmentos/fragFooter :: footer"></div>
+</body>
+</html>

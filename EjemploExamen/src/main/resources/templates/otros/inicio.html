@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- PÁGINA DE INICIO -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Fragmento de header -->
+<head th:replace="fragmentos/fragHead :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+</head>
+<body class="body-estilo-2">
+<!-- Fragmento de Navbar -->
+<div th:replace="fragmentos/fragNavbar :: barra"></div>
+<div class="container">
+    <!-- Fila con el título de la página -->
+    <div class="row justify-content-center mt-4">
+        <div class="col justify-content-center">
+            <h1 class="text-center">Bienvenidos</h1>
+        </div>
+    </div>
+    <!-- Fila con tarjetas informativas de la página de inicio -->
+    <div class="row justify-content-center mt-5 mb-5">
+        <div class="col-md-4 justify-content-center">
+            <div class="card">
+                <img src="https://www.enago.com/es/academy/wp-content/uploads/sites/20/2020/02/Research-Collaboration-1280x720.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Comunidad de Aprendizaje</h5>
+                    <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet diam risus, a tempor leo ullamcorper at. Ut sit amet congue velit, ac rutrum eros. Etiam eu odio fermentum, fermentum ex quis duis.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 justify-content-center">
+            <div class="card">
+                <img src="https://images.wsj.net/im-357297?width=1280&size=1.77777778" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Flexibilidad</h5>
+                    <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet diam risus, a tempor leo ullamcorper at. Ut sit amet congue velit, ac rutrum eros. Etiam eu odio fermentum, fermentum ex quis duis.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 justify-content-center">
+            <div class="card">
+                <img src="https://images.wallpaperscraft.com/image/single/code_symbols_programming_183643_1280x720.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Contenido de Calidad</h5>
+                    <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet diam risus, a tempor leo ullamcorper at. Ut sit amet congue velit, ac rutrum eros. Etiam eu odio fermentum, fermentum ex quis duis.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fragmento de Footer -->
+<div th:replace="fragmentos/fragFooter :: footer"></div>
+</body>
+</html>

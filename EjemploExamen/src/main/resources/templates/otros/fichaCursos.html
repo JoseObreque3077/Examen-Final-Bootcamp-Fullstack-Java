@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!-- PÁGINA QUE MUESTRA LA FICHA DE UN CURSO -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Fragmento de Header -->
+<head th:replace="fragmentos/fragHead :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>Ficha del Curso</title>
+</head>
+<body class="body-estilo-2">
+<!-- Fragmento de Navbar -->
+<div th:replace="fragmentos/fragNavbar :: barra"></div>
+
+<div class="container">
+    <!-- Fila con el título de la página -->
+    <div class="row justify-content-center mt-2">
+        <div class="col justify-content-center">
+            <h1 class="text-center" th:text="${curso.nombre}"></h1>
+        </div>
+    </div>
+    <!-- Fila con la información del curso -->
+    <div class="row mb-3">
+        <!-- Columna que incluye la imagen referencial del curso y el botón para postular al curso -->
+        <div class="col-md-6 d-flex align-items-center mt-5">
+            <div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <!-- Imagen extraída desde la base de datos (URL) -->
+                        <img th:src="${curso.imagen}" class="mx-auto my-auto estilo-imagen rounded-3">
+                    </div>
+                    <!-- El botón de inscripción se deshabilita si: -->
+                    <!-- A) El alumno ya está inscrito en un curso -->
+                    <!-- B) El curso ya no tiene cupos disponibles -->
+                    <!-- C) Ya ha pasado la fecha de inicio del curso -->
+                    <div class="col-md-12 mt-3 d-flex justify-content-center">
+                        <a th:href="@{/alumno/inscripcion-curso/{id}(id=${curso.id})}"
+                           th:class="${(curso.cuposDisponibles>0 && usuarioHab && curso.fechaInicio.after(#dates.createNow()))?'card-link btn btn-primary':'card-link btn btn-secondary disabled'}"
+                           th:text="${curso.cuposDisponibles==0?'Sin Cupos':'Inscribirse'}"
+                           onclick="return confirm('¿Esta seguro de inscribirse en este curso?')">Inscribirse</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Columna que contiene la información del curso en particular -->
+        <div class="col-md-6 mt-4 d-flex align-items-center">
+            <div>
+                <div class="row">
+                    <!-- Descripción -->
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <h4>Descripción</h4>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <p class="row" th:text="${curso.descripcion}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Datos específicos -->
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <ul>
+                            <!-- Fecha de inicio y fin formateadas para mostrarse de la forma DD/MM/AAAA -->
+                            <li th:text="'Fecha de Inicio: ' + ${#dates.format(curso.fechaInicio, 'dd/MM/yyyy')}"></li>
+                            <li th:text="'Fecha de Término: ' + ${#dates.format(curso.fechaFinal, 'dd/MM/yyyy')}"></li>
+                            <li th:text="'Cupos Iniciales: ' + ${curso.cuposIniciales}"></li>
+                            <li th:text="'Cupos Disponibles: ' + ${curso.cuposDisponibles}"></li>
+                        </ul>
+                    </div>
+                    <!-- Contenidos -->
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <div>
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-center">
+                                    <h4 class="row">Contenidos</h4>
+                                </div>
+                                <div class="col-md-12 d-flex justify-content-center">
+                                    <p class="row" th:text="${curso.contenidos}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fragmento de Footer -->
+<div th:replace="fragmentos/fragFooter :: footer"></div>
+</body>
+</html>

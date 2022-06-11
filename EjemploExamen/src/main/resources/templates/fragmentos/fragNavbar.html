@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragmento</title>
+</head>
+<body>
+    <!-- DEFINICIÓN DE UN FRAGMENTO DE NAVBAR -->
+    <div th:fragment="barra">
+        <nav class="navbar navbar-expand-lg navbar-dark estilo-navbar">
+            <div class="container-fluid">
+                <!-- Nombre del Sitio (marca) -->
+                <a class="navbar-brand" th:href="@{/}">Cursos Online</a>
+                <!-- Botón de menú de hamburguesa (para pantallas pequeñas) -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Lista de elementos clickeables (anchors) del navbar -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
+                        <!-- A la página de inicio -->
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Inicio</a>
+                        </li>
+                        <!-- Al formulario de registro de alumnos -->
+                        <li class="nav-item" sec:authorize="!isAuthenticated()">
+                            <a class="nav-link" th:href="@{/alumno/registro}">Registrarme</a>
+                        </li>
+                        <!-- Al listado de los cursos disponibles -->
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/cursos/listado}">Cursos Disponibles</a>
+                        </li>
+                        <!-- Hacia el administrador de cursos (Visible solo par admins) -->
+                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                            <a class="nav-link" th:href="@{/admin/administrar-cursos}">Administrar Cursos</a>
+                        </li>
+                        <!-- Hacia mi panel (Visible solo para alumnos) -->
+                        <li class="nav-item" sec:authorize="hasAuthority('ALUMNO')">
+                            <a class="nav-link" th:href="@{/alumno/mi-panel}">Mi Panel</a>
+                        </li>
+                    </ul>
+                    <!-- Ventana de saludo (personalizado para admin o alumno) -->
+                    <div class="navbar-nav d-flex m-2" sec:authorize="isAuthenticated()">
+                        <div class="card mx-auto" style="width: 18rem;">
+                            <ul class="list-group list-group-flush px">
+                                <li class="list-group-item text-center" sec:authorize="hasAuthority('ADMIN')" >Bienvenido, Administrador</li>
+                                <li class="list-group-item text-center" sec:authorize="hasAuthority('ALUMNO')" th:text="'Bienvenido, ' + ${#authentication.getName()}" >Bienvenido, Administrador</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Botón de inicio de sesión (disponible cuando no se está autentificado) -->
+                    <div class="navbar-nav d-flex" sec:authorize="!isAuthenticated()">
+                        <div class="row justify-content-center">
+                            <div class="col d-flex justify-content-center">
+                                <a class="btn nav-link button-29" th:href="@{/login}">Iniciar Sesión</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Botón de cerrar sesión (disponible cuando ya se está autentificado) -->
+                    <div class="navbar-nav d-flex" sec:authorize="isAuthenticated()">
+                        <div class="row justify-content-center">
+                            <div class="col d-flex justify-content-center">
+                                <a class="btn nav-link button-29" th:href="@{/salir}">Cerrar Sesión</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>

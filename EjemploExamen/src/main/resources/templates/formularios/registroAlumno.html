@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragmentos/fragHead :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>Registro de Alumno</title>
+</head>
+<body class="body-estilo-2">
+<!-- Fragmento Navbar -->
+<div th:replace="fragmentos/fragNavbar :: barra"></div>
+
+<div class="container">
+    <!-- Título de la página -->
+    <div class="row justify-content-center mt-3">
+        <div class="col justify-content-center">
+            <h1 class="text-center">Formulario de Registro</h1>
+        </div>
+    </div>
+    <!-- Fila con el formulario de registro de alumnos -->
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-10">
+            <div class="card estilo-tarjeta-curso">
+                <div class="card-body">
+                    <!-- Formulario -->
+                    <form class="form row justify-content-center" th:action="@{/alumno/registro}" method="post"
+                          th:object="${alumno}" >
+                        <!-- Primer nombre + span de errores de validación -->
+                        <div class="form-group col-md-6 mt-2">
+                            <label th:for="nombre1">Primer nombre</label>
+                            <input class="form-control" type="text" placeholder="Ingrese su primer nombre"
+                                   name="nombre1" th:field="*{nombre1}">
+                            <span th:if="${#fields.hasErrors('nombre1')}" th:errors="*{nombre1}" th:class="error">Producto Error</span>
+                        </div>
+                        <!-- Segundo nombre + span de errores de validación -->
+                        <div class="form-group col-md-6 mt-2">
+                            <label th:for="nombre2">Segundo nombre</label>
+                            <input class="form-control" type="text" placeholder="Ingrese su segundo nombre"
+                                   name="nombre2"
+                                   th:field="*{nombre2}">
+                            <span th:if="${#fields.hasErrors('nombre2')}" th:errors="*{nombre2}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <!-- Primer apellido + span de errores de validación -->
+                        <div class="form-group col-md-6 mt-2">
+                            <label th:for="apellido1">Primer apellido</label>
+                            <input class="form-control" type="text" placeholder="Ingrese su primer apellido"
+                                   name="apellido1"
+                                   th:field="*{apellido1}">
+                            <span th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <!-- Segundo apellido + span de errores de validación -->
+                        <div class="form-group col-md-6 mt-2">
+                            <label th:for="apellido2">Segundo Apellido</label>
+                            <input class="form-control" type="text" placeholder="Ingrese su segundo apellido"
+                                   name="apellido2" th:field="*{apellido2}">
+                            <span th:if="${#fields.hasErrors('apellido2')}" th:errors="*{apellido2}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <!-- Edad + span de errores de validación -->
+                        <div class="form-group col-md-3 mt-2">
+                            <label th:for="edad">Edad</label>
+                            <input class="form-control" type="number" placeholder="Ingrese su edad" name="edad"
+                                   th:field="*{edad}">
+                            <span th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}" th:class="error">Error</span>
+                        </div>
+                        <!-- Email + span de errores de validación -->
+                        <div class="form-group col-md-3 mt-2">
+                            <label th:for="email">Email</label>
+                            <input class="form-control" type="text" placeholder="Ej: correo@ejemplo.com" name="email"
+                                   th:field="*{email}">
+                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                  th:class="error">Error</span>
+                            <span th:if="${emailEnUso}"
+                                  th:class="error">Este email ya está en uso</span>
+                        </div>
+                        <!-- Teléfono + span de errores de validación -->
+                        <div class="form-group col-md-3 mt-2">
+                            <label th:for="telefono">Teléfono</label>
+                            <input class="form-control" type="text" placeholder="Ej: +56912345678" name="telefono"
+                                   th:field="*{telefono}">
+                            <span th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <!-- Contraseña + span de errores de validación -->
+                        <div class="form-group col-md-3 mt-2">
+                            <label th:for="contrasena">Contraseña</label>
+                            <input class="form-control" type="password" placeholder="Ingrese su contraseña"
+                                   name="contrasena"
+                                   th:field="*{contrasena}">
+                            <span th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}" th:class="error">Error</span>
+                        </div>
+                        <!-- Dirección + span de errores de validación -->
+                        <div class="form-group col-md-6 mt-2">
+                            <label th:for="direccion">Dirección</label>
+                            <input class="form-control" type="text" placeholder="Ingrese su dirección" name="direccion"
+                                   th:field="*{direccion}">
+                            <span th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <!-- Región + span de errores de validación -->
+                        <div class="form-group col-md-6 mt-2">
+                            <label th:for="region">Región</label>
+                            <select class="form-control" name="region" th:field="*{region}">
+                                <option th:each="reg: ${regiones}" th:value="${reg.id}"
+                                        th:text="${reg.descripcion}"></option>
+                            </select>
+                            <span th:if="${#fields.hasErrors('region')}" th:errors="*{region}"
+                                  th:class="error">Error</span>
+                        </div>
+                        <!-- Botones de submit y volver atrás -->
+                        <div class="row justify-content-center">
+                            <div class="form-group col-md-4 d-flex justify-content-center mt-4">
+                                <button class="btn btn-warning btn-outline-dark" type="submit">Registrarse</button>
+                            </div>
+                            <div class="form-group col-md-4 d-flex justify-content-center mt-4">
+                                <a class="btn btn-danger btn-outline-dark" type="button" th:href="@{/}">Volver Atrás</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fragmento de Footer -->
+<div th:replace="fragmentos/fragFooter :: footer"></div>
+</body>
+</html>
